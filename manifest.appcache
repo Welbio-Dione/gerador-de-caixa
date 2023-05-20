@@ -1,0 +1,8 @@
+CACHE MANIFEST
+# 07/05/2023 v1.0
+index.html
+./assets/logo.jpeg
+./assets/x.svg
+./src/index.js
+./src/normalize-min.css
+./src/style.css

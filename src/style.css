@@ -1,0 +1,175 @@
+body {
+  font-family: sans-serif;
+  position: relative;
+  font-size: 1.2rem;
+}
+header {
+  text-align: center;
+}
+.page-title {
+  font: 2rem;
+}
+input {
+  height: 40px;
+  border-radius: 10px;
+  border: solid 1px black;
+  outline: none;
+}
+.container {
+  margin: 0 10vw;
+}
+.entry {
+  margin: 5px;
+  padding: 10px 20px;
+  background: green;
+  border: none;
+  border-radius: 10px;
+  color: white;
+}
+.entry:disabled {
+  background: #48955b;
+}
+.back {
+  padding: 10px 20px;
+  background: red;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  margin: 5px
+}
+.back:disabled {
+  background: #954848;
+}
+.card-entry {
+  background: #8fffa7;
+  border: solid 1px #686868;
+  display: flex;
+  justify-content: space-between;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  box-sizing: border-box;
+}
+.card-exit {
+  background: #ff8f8f;
+  border: solid 1px #686868;
+  display: flex;
+  justify-content: space-between;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 10px;
+}
+#btn-calculate {
+  background: blue;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+}
+#btn-reset {
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+}
+#btn-calculate, #btn-reset {
+  margin: 10px 0;
+}
+form {
+  text-align: center;
+  margin: 15px;
+}
+.close {
+  width: 40px;
+}
+.modal {
+  background: #eaeaea;
+  text-align: center;
+  border: solid 1px #686868;
+  border-radius: 10px;
+  position: fixed;
+  padding: 20px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+}
+.buttons-add {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+._entry input, .exit input {
+  margin: 10px 0;
+}
+.save {
+  background: blue;
+  display: none;
+}
+.select {
+  display: block;
+}
+.table-info {
+  display: flex;
+  justify-content: center;
+}
+table {
+  border-collapse: collapse;
+  display: none;
+}
+table th {
+  border:1px solid #C0C0C0;
+  padding:10px;
+  background:#F0F0F0;
+}
+table td {
+  border:1px solid #C0C0C0;
+  padding:10px;
+}
+.table-head {
+  background: #F0F0F0;
+}
+.table-blue{
+  background: #89b8e8;
+}
+.table-red {
+  background: #ff8f8f;
+}
+.table-green {
+  background: #8fffa7;
+}
+
+.restart {
+  display: none;
+  text-align: center;
+}
+
+/* responsividade */
+@media screen and (max-width: 600px) {
+  .modal {
+    width: 70vw;
+  }
+}
+@media screen and (max-width: 390px) {
+  .page-title {
+    font-size: 1.4rem;
+  }
+  input {
+    width: 100%;
+  }
+  .table-info {
+    font-size: .8rem;
+  }
+  .back, .entry, #btn-calculate, #btn-reset {
+    padding: 10px 10px;
+    font-size: 1rem;
+    height: 40px;
+  }
+  table th, table td {
+    padding: 5px;
+  }
+}

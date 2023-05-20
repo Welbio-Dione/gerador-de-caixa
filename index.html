@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR" manifest="manifest.appcache">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="src/normalize-min.css">
+    <link rel="stylesheet" href="src/style.css">
+    <link rel="shortcut icon" href="assets/logo.jpeg" type="image/x-icon">
+    <title>Gerador de caixa</title>
+  </head>
+  <body>
+    <header>
+      <h1>Gerador de caixa</h1>
+    </header>
+    <main class="container">
+      <div class="movement">
+        <fieldset form="informations">
+          <legend>entradas</legend>
+          <div class="add-card"></div>
+          <div class="set-entry"></div>
+          <button id="add-entry" class="entry" onclick="addNewEntry()">adicionar entrada</button>
+        </fieldset>
+        <fieldset form="informations">
+          <legend>saidas</legend>
+          <div class="add-card-exit"></div>
+          <div class="set-exit"></div>
+          <button id="add-exit" class="back" onclick="addNewExit()">adicionar saída</button>
+        </fieldset form="informations">
+        <div class="previous-balance">
+          <fieldSet informations>
+            <legend>saldo anterior</legend>
+          <input type="number" id="balance" placeholder="R$ 0,00" required/>
+          </fieldSet>
+        </div>
+        <form action="" method="get" id="informations">
+          <button id="btn-calculate" type="submit" onclick="calculate(event)">calcular</button>
+          <button id="btn-reset" onclick="reset(e)">limpar tudo</button>
+        </form>
+      </div>
+    </main>
+    <div class="modal">
+      <p>desculpe, mas essa funcionalidade ainda não está disponível</p>
+      <button onclick="closeModal()" class="back">sair</button>
+    </div>
+    <div class="table-info">
+      <table>
+        <caption>resultados</caption>
+        <thead>
+          <tr>
+            <th class="hidden"></th>
+            <th>descrição</th>
+            <th>entradas</th>
+            <th>saídas</th>
+          </tr>
+        </thead>
+        <tbody class="input-info">  
+        </tbody>
+      </table>
+    </div>
+    <form action="">
+      <button class="entry restart">reiniciar</button>
+      <button class="entry save" onclick="save(event)">salvar</button>
+    </form>
+    <script src="./src/index.js"></script>
+    <script src="./test.js"></script>
+  </body>
+</html>
