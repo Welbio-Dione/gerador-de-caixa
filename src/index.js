@@ -31,7 +31,7 @@ function addNewEntry() {
   // precionar o enter para adicionar saida ou entrada
   document.addEventListener('keypress', event => {
     if (event.key === 'Enter') {
-      return addEntry()
+      addEntry()
     }
   })
 }
@@ -81,7 +81,7 @@ function addNewExit() {
   // precionar o enter para adicionar saida ou entrada
   document.addEventListener('keypress', event => {
     if (event.key === 'Enter') {
-      return addExit()
+      addExit()
     }
   })
 }
