@@ -5,7 +5,20 @@ let values = {
   desEntry: [],
   previous: 0,
   sum: 0,
-  total: 0
+  total: 0,
+}
+
+let remove = {
+  entry : {
+    num : 0,
+    element : {},
+    type : '',
+  },
+  exit : {
+    num : 0,
+    element : {},
+    type : '',
+  },
 }
 
 // entradas---------------------------------------------------------
@@ -48,7 +61,7 @@ function addEntry() {
   cardEntry.innerHTML += `<div class="card-entry">
   <p><b>${descriptionEntry}</b>${descriptionEntry === '' ? '' : ': R$ '}
   ${values.entry[values.entry.length-1].toFixed(2).replace('.', ',')}</p>
-  <img src="./assets/x.svg" alt="excluir valor" class="close" onclick="deleteCard(this, ${values.desEntry.length-1}, 'entry')">
+  <img src="./assets/x.svg" alt="excluir valor" class="close" onclick="openModal(this, ${values.desEntry.length-1}, 'entry')">
   </div>`
 }
 
@@ -185,7 +198,34 @@ function save(event) {
   window.print()
 }
 
-function deleteCard(element, num, type) {
+function openModal(element, num, type) {
+  document.querySelector('.modal').classList.add('select')
+
+  if (type === 'entry') {
+    remove.entry.num = num
+    remove.entry.element = element
+    remove.entry.type = type
+  } else if (type === 'exit') {
+    remove.exit.num = num
+    remove.exit.element = element
+    remove.exit.type = type   
+  }
+}
+
+function closeModal() {
+  document.querySelector('.modal').classList.remove('select')
+  
+  remove.entry.num = 0
+  remove.entry.element = {}
+  remove.entry.type = ''
+
+  remove.exit.num = 0
+  remove.exit.element = {}
+  remove.exit.type = ''
+  
+}
+function deleteCard() {
+  document.querySelector('.modal').classList.remove('select')
   element.parentElement.classList.add('remove')
   
   if (type === 'entry') {

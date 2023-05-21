@@ -18,6 +18,9 @@ input {
 .container {
   margin: 0 10vw;
 }
+fieldset {
+  background: #fafafa;
+}
 .entry {
   margin: 5px;
   padding: 10px 20px;
