@@ -110,6 +110,9 @@ form {
   background: blue;
   display: none;
 }
+.remove {
+  display: none;
+}
 .select {
   display: block;
 }

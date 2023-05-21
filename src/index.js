@@ -48,7 +48,7 @@ function addEntry() {
   cardEntry.innerHTML += `<div class="card-entry">
   <p><b>${descriptionEntry}</b>${descriptionEntry === '' ? '' : ': R$ '}
   ${values.entry[values.entry.length-1].toFixed(2).replace('.', ',')}</p>
-  <img src="./assets/x.svg" alt="excluir valor" class="close">
+  <img src="./assets/x.svg" alt="excluir valor" class="close" onclick="deleteCard(this, ${values.desEntry.length-1}, 'entry')">
   </div>`
 }
 
@@ -99,7 +99,7 @@ function addExit() {
   cardExit.innerHTML += `<div class="card-exit">
   <p><b>${descriptionExit}</b>${descriptionExit === '' ? '' : ': R$ '}
   ${values.exit[values.exit.length-1].toFixed(2).replace('.', ',')}</p>
-  <img src="./assets/x.svg" alt="excluir valor" class="close">
+  <img src="./assets/x.svg" alt="excluir valor" class="close" onclick="deleteCard(this, ${values.desExit.length-1}, 'exit')">
   </div>`
 }
 
@@ -183,4 +183,18 @@ function calculate(event) {
 function save(event) {
   event.preventDefault()
   window.print()
+}
+
+function deleteCard(element, num, type) {
+  element.parentElement.classList.add('remove')
+  
+  if (type === 'entry') {
+    values.entry.splice(num, 1)
+    values.desEntry.splice(num, 1)
+  } else if (type === 'exit') {
+    values.exit.splice(num, 1)
+    values.desExit.splice(num, 1)
+  }
+
+  console.table(values)
 }
