@@ -16,14 +16,17 @@ disabledOrEnabledEntry = document.querySelector('#add-entry')
 let descriptionEntry, valueEntry;
 
 function addNewEntry() {
-  createNewEntry.innerHTML = `<div class="_entry modal">
-  <p>adicionar entrada</p>
-  <input type="text" id="entry-description" placeholder="descrição"/> <br>
-  <input type="number" id="entry-value" placeholder="R$ 0,00"/> <br>
-  <div class="buttons-add">
-    <button onclick="removeEntry()" class="back">cancelar</button>
-    <button onclick="addEntry()" class="entry">adicionar</button>
-  </div>
+  createNewEntry.innerHTML = `
+  <div class="modal-shadow">
+    <div class="_entry modal">
+      <p>adicionar entrada</p>
+      <input type="text" id="entry-description" placeholder="descrição"/> <br>
+      <input type="number" id="entry-value" placeholder="R$ 0,00"/> <br>
+      <div class="buttons-add">
+        <button onclick="removeEntry()" class="back">cancelar</button>
+        <button onclick="addEntry()" class="entry">adicionar</button>
+      </div>
+    </div>
   </div>`
   document.querySelector('._entry').classList.add('select')
   disabledOrEnabledEntry.disabled = true
@@ -65,14 +68,17 @@ disabledOrEnabledExit = document.querySelector('#add-exit')
 let descriptionExit, valueExit;
 
 function addNewExit() {
-  createNewExit.innerHTML = `<div class="exit modal">
-  <p>adicionar saída</p>
-  <input type="text" id="exit-description" placeholder="descrição"/> <br>
-  <input type="number" id="exit-value" placeholder="R$ 0,00"/> <br>
-  <div class="buttons-add">
-    <button onclick="removeExit()" class="back">cancelar</button>
-    <button onclick="addExit()" class="entry">adicionar</button>
-  </div>
+  createNewExit.innerHTML = `
+  <div class="modal-shadow">
+    <div class="exit modal">
+      <p>adicionar saída</p>
+      <input type="text" id="exit-description" placeholder="descrição"/> <br>
+      <input type="number" id="exit-value" placeholder="R$ 0,00"/> <br>
+      <div class="buttons-add">
+        <button onclick="removeExit()" class="back">cancelar</button>
+        <button onclick="addExit()" class="entry">adicionar</button>
+      </div>
+    </div>
   </div>`
   
   document.querySelector('.exit').classList.add('select')
@@ -170,8 +176,8 @@ function calculate(event) {
     <td colspan=3 class="table-red">${sumExit.toFixed(2).replace('.', ',')}</td>
   </tr>
   <tr class="table-rend">
-    <td class="table-head">rendimento mensal</td>
-    <td colspan=3>${(values.sum - sumExit).toFixed(2).replace('.', ',')}</td>
+    <td class="table-head ${values.sum - sumExit >= 0 ? 'table-green': 'table-red'}">rendimento mensal</td>
+    <td colspan=3 class="${values.sum - sumExit >= 0 ? 'table-green': 'table-red'}">${(values.sum - sumExit).toFixed(2).replace('.', ',')}</td>
   </tr>
   `
 
