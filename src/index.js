@@ -34,11 +34,17 @@ function addNewEntry() {
   document.querySelector("._entry").classList.add("select");
   document.querySelector(".modal-shadow").classList.add("select");
   disabledOrEnabledEntry.disabled = true;
+  const inputValue = document.querySelector('#entry-value')
+  const inputDes = document.querySelector('#entry-description')
+  inputDes.focus()
 
-  // precionar o enter para adicionar saida ou entrada
   document.addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
-      addEntry();
+      if (inputValue !== document.activeElement) {
+        inputValue.focus() 
+      } else {
+        addEntry()
+      }
     }
   });
 }
@@ -88,12 +94,19 @@ function addNewExit() {
 
   document.querySelector(".exit").classList.add("select");
   document.querySelector(".modal-shadow").classList.add("select");
+  const inputValue = document.querySelector('#exit-value')
+  const inputDes = document.querySelector('#exit-description')
+  inputDes.focus()
   disabledOrEnabledExit.disabled = true;
+  
 
-  // precionar o enter para adicionar saida ou entrada
   document.addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
-      addExit();
+      if (inputValue !== document.activeElement) {
+        inputValue.focus() 
+      } else {
+        addExit()
+      }
     }
   });
 }
@@ -144,7 +157,7 @@ function calculate(event) {
   // para as saídas----------------
   const itensToRemoveEx = [];
   for (let i = 0; i < values.desExit.length; i++) {
-    let element = document.querySelector(`.entry${i}`);
+    let element = document.querySelector(`.exit${i}`);
 
     if (element.classList.contains("remove")) {
       itensToRemoveEx.push(i);
