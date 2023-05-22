@@ -26,8 +26,8 @@ function addNewEntry() {
       <input type="text" id="entry-description" placeholder="descrição"/> <br>
       <input type="number" id="entry-value" placeholder="R$ 0,00"/> <br>
       <div class="buttons-add">
-        <button onclick="removeEntry()" class="back">cancelar</button>
         <button onclick="addEntry()" class="entry">adicionar</button>
+        <button onclick="removeEntry()" class="back">cancelar</button>
       </div>
     </div>
   </div>`;
@@ -71,6 +71,20 @@ function removeEntry() {
   disabledOrEnabledEntry.disabled = false;
 }
 
+function openReset() {
+  document.querySelector(".m-reset").classList.add("select");
+  document.querySelector(".modal-reset").classList.add("select");
+}
+
+function closeReset() {
+  document.querySelector(".m-reset").classList.remove("select");
+  document.querySelector(".modal-reset").classList.remove("select");
+}
+
+function reset() {
+  window.location.replace(window.location.href)
+}
+
 // saidas--------------------------------------------------------------------
 const createNewExit = document.querySelector(".set-exit"),
   cardExit = document.querySelector(".add-card-exit"),
@@ -86,8 +100,8 @@ function addNewExit() {
       <input type="text" id="exit-description" placeholder="descrição"/> <br>
       <input type="number" id="exit-value" placeholder="R$ 0,00"/> <br>
       <div class="buttons-add">
-        <button onclick="removeExit()" class="back">cancelar</button>
         <button onclick="addExit()" class="entry">adicionar</button>
+        <button onclick="removeExit()" class="back">cancelar</button>
       </div>
     </div>
   </div>`;
@@ -134,9 +148,7 @@ function removeExit() {
   disabledOrEnabledExit.disabled = false;
 }
 
-function calculate(event) {
-  event.preventDefault();
-
+function calculate() {
   // removendo os itens de entrada que o usuário excluiu entradas--------------
   const itensToRemoveEn = [];
   for (let i = 0; i < values.desEntry.length; i++) {
@@ -261,11 +273,6 @@ function calculate(event) {
   document.querySelector(".save").style.display = "inline";
 }
 
-function save(event) {
-  event.preventDefault();
-  window.print();
-}
-
 let elementCard;
 const modalShadow = document.querySelector(".modal-shadow"),
   modal = document.querySelector(".modal");
@@ -286,4 +293,8 @@ function deleteCard() {
   modalShadow.style.display = "none";
   modal.style.display = "none";
   elementCard.parentElement.classList.add("remove");
+}
+
+function restart() {
+  window.location.replace(window.location.href)
 }

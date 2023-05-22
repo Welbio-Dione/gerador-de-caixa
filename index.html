@@ -33,17 +33,24 @@
           <input type="number" id="balance" placeholder="R$ 0,00" required/>
           </fieldSet>
         </div>
-        <form action="" method="get" id="informations">
-          <button id="btn-calculate" type="submit" onclick="calculate(event)">calcular</button>
-          <button id="btn-reset" onclick="reset(e)">limpar tudo</button>
-        </form>
+        <div class="form">
+          <button id="btn-calculate" type="submit" onclick="calculate()">gerar tabela</button>
+          <button id="btn-reset" type="submit" onclick="openReset()">limpar tudo</button>
+        </div>
       </div>
     </main>
     <div class="modal-shadow">
       <div class="modal">
         <p>Tem certeza que quer <span style="color: red">excluir</span> esse item?</p>
-        <button onclick="deleteCard()" class="entry">sim</button>
-        <button onclick="closeModal()" class="back">não</button>
+        <button onclick="deleteCard()" class="entry">confirmar</button>
+        <button onclick="closeModal()" class="back">cancelar</button>
+      </div>
+    </div>
+    <div class="modal-shadow m-reset">
+      <div class="modal modal-reset">
+        <p>Deseja <span style="color: red">excluir</span> todo o progresso?</p>
+        <button onclick="reset()" class="entry">confirmar</button>
+        <button onclick="closeReset()" class="back">cancelar</button>
       </div>
     </div>
     <div class="table-info">
@@ -61,10 +68,10 @@
         </tbody>
       </table>
     </div>
-    <form action="">
-      <button class="entry restart">reiniciar</button>
-      <button class="entry save" onclick="save(event)">salvar</button>
-    </form>
+    <div class="form">
+      <button class="entry restart" onclick="restart()">reiniciar</button>
+      <button class="entry save" onclick="print()">salvar</button>
+    </div>
     <script src="./src/index.js"></script>
   </body>
 </html>

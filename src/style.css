@@ -103,7 +103,7 @@ fieldset {
 #btn-calculate, #btn-reset {
   margin: 10px 0;
 }
-form {
+.form {
   text-align: center;
   margin: 15px;
 }
