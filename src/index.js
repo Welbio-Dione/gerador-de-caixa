@@ -185,6 +185,16 @@ function calculate(event) {
 
   values.total = values.sum - sumExit + values.previous;
 
+  const date = new Date(),
+  day = date.getDate(),
+  month = date.getMonth() + 1,
+  year = date.getFullYear(),
+  dateTable = document.querySelector('.date-table')
+
+  dateTable.innerHTML = `
+  ${day < 10 ? `0${day}` : day}/${month < 10 ? `0${month}` : month}/${year}
+  `
+
   const result = document.querySelector(".input-info");
   const table = document.querySelector("table");
   const main = document.querySelector(".container");
