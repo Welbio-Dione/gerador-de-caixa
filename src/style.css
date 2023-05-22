@@ -136,6 +136,7 @@ form {
   top: 0;
   left: 0;
   background: var(--modal-shadow);
+  display: none;
 }
 .buttons-add {
   display: flex;

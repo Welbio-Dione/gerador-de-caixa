@@ -22,7 +22,7 @@ function addNewEntry() {
   createNewEntry.innerHTML = `
   <div class="modal-shadow">
     <div class="_entry modal">
-      <p>adicionar entrada</p>
+      <h4>Adicionar <span style="color: green;">entrada</span></h4>
       <input type="text" id="entry-description" placeholder="descrição"/> <br>
       <input type="number" id="entry-value" placeholder="R$ 0,00"/> <br>
       <div class="buttons-add">
@@ -32,6 +32,7 @@ function addNewEntry() {
     </div>
   </div>`;
   document.querySelector("._entry").classList.add("select");
+  document.querySelector(".modal-shadow").classList.add("select");
   disabledOrEnabledEntry.disabled = true;
 
   // precionar o enter para adicionar saida ou entrada
@@ -54,7 +55,7 @@ function addEntry() {
   cardEntry.innerHTML += `<div class="card-entry entry${contEntry}">
   <p><b>${descriptionEntry}</b>${descriptionEntry === "" ? "" : ": R$ "}
   ${values.entry[values.entry.length - 1].toFixed(2).replace(".", ",")}</p>
-  <img src="./assets/x.svg" alt="excluir valor" class="close" onclick="deleteCard(this)">
+  <img src="./assets/x.svg" alt="excluir valor" class="close" onclick="openModal(this)">
   </div>`;
   contEntry++;
 }
@@ -75,7 +76,7 @@ function addNewExit() {
   createNewExit.innerHTML = `
   <div class="modal-shadow">
     <div class="exit modal">
-      <p>adicionar saída</p>
+      <h4>Adicionar <span style="color: red;">saída</span></h4>
       <input type="text" id="exit-description" placeholder="descrição"/> <br>
       <input type="number" id="exit-value" placeholder="R$ 0,00"/> <br>
       <div class="buttons-add">
@@ -86,6 +87,7 @@ function addNewExit() {
   </div>`;
 
   document.querySelector(".exit").classList.add("select");
+  document.querySelector(".modal-shadow").classList.add("select");
   disabledOrEnabledExit.disabled = true;
 
   // precionar o enter para adicionar saida ou entrada
@@ -109,7 +111,7 @@ function addExit() {
   cardExit.innerHTML += `<div class="card-exit exit${contExit}">
   <p><b>${descriptionExit}</b>${descriptionExit === "" ? "" : ": R$ "}
   ${values.exit[values.exit.length - 1].toFixed(2).replace(".", ",")}</p>
-  <img src="./assets/x.svg" alt="excluir valor" class="close" onclick="deleteCard(this)">
+  <img src="./assets/x.svg" alt="excluir valor" class="close" onclick="openModal(this)">
   </div>`;
   contExit++;
 }
@@ -155,7 +157,7 @@ function calculate(event) {
     values.exit.splice(index, 1);
     values.desExit.splice(index, 1);
   }
-// --------------------------------------------------------------------------
+  // --------------------------------------------------------------------------
 
   values.previous = +document.querySelector("#balance").value;
 
@@ -241,6 +243,24 @@ function save(event) {
   window.print();
 }
 
-function deleteCard(element) {
-  element.parentElement.classList.add("remove");
+let elementCard;
+const modalShadow = document.querySelector(".modal-shadow"),
+  modal = document.querySelector(".modal");
+
+function openModal(e) {
+  elementCard = e;
+
+  modalShadow.style.display = "block";
+  modal.style.display = "block";
+}
+
+function closeModal() {
+  modalShadow.style.display = "none";
+  modal.style.display = "none";
+}
+
+function deleteCard() {
+  modalShadow.style.display = "none";
+  modal.style.display = "none";
+  elementCard.parentElement.classList.add("remove");
 }
