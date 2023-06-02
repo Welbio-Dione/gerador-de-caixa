@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <!-- versao compacta para uso offline. 
+  versao online disponivel em: https://welbio-dione.github.io/gerador-de-caixa/?-->
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="este programa visa orientar e auxiliar pessoas leigas a lidarem com suas finanças">
+    <meta name="author" content="welbio dione">
+    <style>
+      /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
+html { line-height: 1.15;}
+body { margin: 0; }
+main { display: block; }
+h1 { font-size: 2em; margin: 0.67em 0; }
+hr { box-sizing: content-box; height: 0; overflow: visible; }
+pre { font-family: monospace, monospace; font-size: 1em; }
+a { background-color: transparent; }
+abbr[title] { border-bottom: none; text-decoration: underline; text-decoration: underline dotted; }
+b, strong { font-weight: bolder; }
+code, kbd, samp { font-family: monospace, monospace; font-size: 1em; }
+small { font-size: 80%; }
+sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
+sub { bottom: -0.25em; }
+sup { top: -0.5em; } 
+img { border-style: none; }
+button, input, optgroup, select, textarea { font-family: inherit; font-size: 100%; line-height: 1.15; margin: 0; }
+button, input { overflow: visible; }
+button, select { text-transform: none; }
+button, [type="button"], [type="reset"], [type="submit"] {appearance: button; }
+button::-moz-focus-inner, [type="button"]::-moz-focus-inner, [type="reset"]::-moz-focus-inner, [type="submit"]::-moz-focus-inner { border-style: none; padding: 0; }
+button:-moz-focusring, [type="button"]:-moz-focusring, [type="reset"]:-moz-focusring, [type="submit"]:-moz-focusring { outline: 1px dotted ButtonText; }
+fieldset { padding: 0.35em 0.75em 0.625em; }
+legend { box-sizing: border-box; color: inherit; display: table; max-width: 100%; padding: 0; white-space: normal; }
+progress { vertical-align: baseline; }
+textarea { overflow: auto; }
+[type="checkbox"], [type="radio"] { box-sizing: border-box; padding: 0; }
+[type="number"]::-webkit-inner-spin-button, [type="number"]::-webkit-outer-spin-button { height: auto; }
+[type="search"] { appearance: textfield; outline-offset: -2px; }
+[type="search"]::-webkit-search-decoration { -webkit-appearance: none; }
+::-webkit-file-upload-button { -webkit-appearance: button; font: inherit; }
+details { display: block; }
+summary { display: list-item; }
+template { display: none; }
+[hidden] { display: none; }
+    </style>
+    <style>
+      body {
+  font-family: sans-serif;
+  position: relative;
+  font-size: 1.2rem;
+}
+header {
+  text-align: center;
+}
+.page-title {
+  font: 2rem;
+}
+input {
+  height: 40px;
+  border-radius: 10px;
+  border: solid 1px black;
+  outline: none;
+}
+.container {
+  margin: 0 10vw;
+}
+.entry {
+  margin: 5px;
+  padding: 10px 20px;
+  background: green;
+  border: none;
+  border-radius: 10px;
+  color: white;
+}
+.entry:disabled {
+  background: #48955b;
+}
+.back {
+  padding: 10px 20px;
+  background: red;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  margin: 5px
+}
+.back:disabled {
+  background: #954848;
+}
+.card-entry {
+  background: #8fffa7;
+  border: solid 1px #54ae68;
+  color: #246131;
+  display: flex;
+  justify-content: space-between;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  box-sizing: border-box;
+}
+.card-exit {
+  background: #ff8f8f;
+  border: solid 1px #b65d5d;
+  color: #622525;
+  display: flex;
+  justify-content: space-between;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 10px;
+}
+#btn-calculate {
+  background: blue;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+}
+#btn-reset {
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+}
+#btn-calculate, #btn-reset {
+  margin: 10px 0;
+}
+form {
+  text-align: center;
+  margin: 15px;
+}
+.close {
+  width: 40px;
+}
+.modal {
+  background: #eaeaea;
+  text-align: center;
+  border: solid 1px #686868;
+  border-radius: 10px;
+  position: fixed;
+  padding: 20px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+}
+.buttons-add {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+._entry input, .exit input {
+  margin: 10px 0;
+}
+.save {
+  background: blue;
+  display: none;
+}
+.select {
+  display: block;
+}
+.table-info {
+  display: flex;
+  justify-content: center;
+  margin: 30px;
+}
+table {
+  border-collapse: collapse;
+  display: none;
+}
+table th {
+  border:1px solid #C0C0C0;
+  padding:10px;
+  background:#F0F0F0;
+}
+table td {
+  border:1px solid #C0C0C0;
+  padding:10px;
+}
+.table-head {
+  background: #F0F0F0;
+}
+.table-red {
+  background: #ff8f8f;
+  color: #622525;
+}
+.table-green {
+  background: #8fffa7;
+  color: #246131;
+}
+
+.restart {
+  display: none;
+  text-align: center;
+}
+
+/* responsividade */
+@media screen and (max-width: 600px) {
+  .modal {
+    width: 70vw;
+  }
+}
+@media screen and (max-width: 390px) {
+  .page-title {
+    font-size: 1.4rem;
+  }
+  input {
+    width: 100%;
+  }
+  .table-info {
+    font-size: .8rem;
+  }
+  .back, .entry, #btn-calculate, #btn-reset {
+    padding: 10px 10px;
+    font-size: 1rem;
+    height: 40px;
+  }
+  table th, table td {
+    padding: 5px;
+  }
+}
+    </style>
+    <title>Gerador de caixa</title>
+  </head>
+  <body>
+    <header>
+      <h1 class="page-title">Gerador de caixa</h1>
+    </header>
+    <main class="container">
+      <div class="movement">
+        <fieldset form="informations">
+          <legend>entradas</legend>
+          <div class="add-card"></div>
+          <div class="set-entry"></div>
+          <button id="add-entry" class="entry" onclick="addNewEntry()">adicionar entrada</button>
+        </fieldset>
+        <fieldset form="informations">
+          <legend>saidas</legend>
+          <div class="add-card-exit"></div>
+          <div class="set-exit"></div>
+          <button id="add-exit" class="back" onclick="addNewExit()">adicionar saída</button>
+        </fieldset form="informations">
+        <div class="previous-balance">
+          <fieldSet informations>
+            <legend>saldo anterior</legend>
+          <input type="number" id="balance" placeholder="R$ 0,00" required/>
+          </fieldSet>
+        </div>
+        <form action="" method="get" id="informations">
+          <button id="btn-calculate" type="submit" onclick="calculate(event)">calcular</button>
+          <button id="btn-reset">limpar tudo</button>
+        </form>
+      </div>
+    </main>
+    <div class="modal">
+      <p>desculpe, mas essa funcionalidade ainda não está disponível</p>
+      <button onclick="closeElement()" class="back">sair</button>
+    </div>
+    <div class="table-info">
+      <table>
+        <caption>resultados</caption>
+        <thead>
+          <tr>
+            <th class="hidden"></th>
+            <th>descrição</th>
+            <th>entradas</th>
+            <th>saídas</th>
+          </tr>
+        </thead>
+        <tbody class="input-info">  
+        </tbody>
+      </table>
+    </div>
+    <form action="">
+      <button class="entry restart">reiniciar</button>
+      <button class="entry save" onclick="save(event)">salvar</button>
+    </form>
+    <script>
+      let values = {
+  entry: [],
+  exit: [],
+  desExit: [],
+  desEntry: [],
+  previous: 0,
+  sum: 0,
+  total: 0
+}
+
+// entradas---------------------------------------------------------
+const createNewEntry = document.querySelector('.set-entry'),
+cardEntry = document.querySelector('.add-card'),
+disabledOrEnabledEntry = document.querySelector('#add-entry')
+let descriptionEntry, valueEntry;
+
+function addNewEntry() {
+  createNewEntry.innerHTML = `<div class="_entry modal">
+  <p>adicionar entrada</p>
+  <input type="text" id="entry-description" placeholder="descrição" required autofocus/> <br>
+  <input type="number" id="entry-value" placeholder="R$ 0,00" required=""/> <br>
+  <div class="buttons-add">
+    <button onclick="removeEntry()" class="back">cancelar</button>
+    <button onclick="addEntry()" class="entry">adicionar</button>
+  </div>
+  </div>`
+  document.querySelector('._entry').classList.add('select')
+  disabledOrEnabledEntry.disabled = true
+}
+
+function addEntry() {
+  valueEntry = document.querySelector('#entry-value').value
+  values.entry.push(+valueEntry)
+
+  descriptionEntry = document.querySelector('#entry-description').value
+  values.desEntry.push(descriptionEntry)
+
+  disabledOrEnabledEntry.disabled = false
+  createNewEntry.innerHTML = ''
+  cardEntry.innerHTML += `<div class="card-entry">
+  <p><b>${descriptionEntry}</b>${descriptionEntry === '' ? '' : ': R$ '}
+  ${values.entry[values.entry.length-1].toFixed(2).replace('.', ',')}</p>
+  </div>`
+}
+
+function removeEntry() {
+  createNewEntry.innerHTML = ''
+  disabledOrEnabledEntry.disabled = false
+}
+
+// saidas--------------------------------------------------------------------
+const createNewExit = document.querySelector('.set-exit'),
+cardExit = document.querySelector('.add-card-exit'),
+disabledOrEnabledExit = document.querySelector('#add-exit')
+let descriptionExit, valueExit;
+
+function addNewExit() {
+  createNewExit.innerHTML = `<div class="exit modal">
+  <p>adicionar saída</p>
+  <input type="text" id="exit-description" placeholder="descrição" required autofocus/> <br>
+  <input type="number" id="exit-value" placeholder="R$ 0,00" required=""/> <br>
+  <div class="buttons-add">
+    <button onclick="removeExit()" class="back">cancelar</button>
+    <button onclick="addExit()" class="entry">adicionar</button>
+  </div>
+  </div>`
+  
+  document.querySelector('.exit').classList.add('select')
+  disabledOrEnabledExit.disabled = true
+}
+
+function addExit() {
+  valueExit = document.querySelector('#exit-value').value
+  values.exit.push(+valueExit)
+
+  descriptionExit = document.querySelector('#exit-description').value
+  values.desExit.push(descriptionExit)
+
+  disabledOrEnabledExit.disabled = false
+  createNewExit.innerHTML = ''
+  cardExit.innerHTML += `<div class="card-exit">
+  <p><b>${descriptionExit}</b>${descriptionExit === '' ? '' : ': R$ '}
+  ${values.exit[values.exit.length-1].toFixed(2).replace('.', ',')}</p>
+  </div>`
+}
+
+function removeExit() {
+  createNewExit.innerHTML = ''
+  disabledOrEnabledExit.disabled = false
+}
+
+function calculate(event) {
+  event.preventDefault();
+  values.previous = +document.querySelector('#balance').value
+  
+  let sumExit = 0
+  for (let i = 0; i < values.entry.length; i++) {
+    values.sum += values.entry[i]
+  }
+  
+  for (let j = 0; j < values.exit.length; j++){
+    sumExit += values.exit[j]
+  }
+
+  values.total = (values.sum - sumExit) + values.previous
+  
+  const result = document.querySelector('.input-info')
+  const table = document.querySelector('table')
+  const main = document.querySelector('.container')
+  main.innerHTML = ''
+  table.classList.add('select')
+  for (let i = 0; i < values.desEntry.length; i++) {
+    result.innerHTML += `
+    <tr>
+      <td></td>
+      <td>${values.desEntry[i]}</td>
+      <td class="table-green">${values.entry[i].toFixed(2).replace('.', ',')}</td>
+      <td></td>
+    </tr>
+    `
+  }
+  for (let j = 0; j < values.desExit.length; j++){
+    result.innerHTML += `<tr>
+      <td></td>
+      <td>${values.desExit[j]}</td>
+      <td></td>
+      <td class="table-red">${values.exit[j].toFixed(2).replace('.', ',')}</td>
+    </tr>
+    `
+  }
+
+  result.innerHTML += `
+  <tr>
+    <td class="table-head"><b>saldo anterior</b></td>
+    <td colspan=3>${values.previous.toFixed(2).replace('.', ',')}</td>
+  </tr>
+  <tr>
+    <td class="table-head"><b>saldo atual</b></td>
+    <td colspan=3>${values.total.toFixed(2).replace('.', ',')}</td>
+  </tr>
+  <tr>
+    <td class="table-head"><b>para conferência</b></td>
+    <td colspan=3>${(values.sum + values.previous).toFixed(2).replace('.', ',')}</td>
+  </tr>
+  <tr>
+    <td class="table-head table-green">total de entradas</td>
+    <td colspan=3 class="table-green">${values.sum.toFixed(2).replace('.', ',')}</td>
+  </tr>
+  <tr>
+    <td class="table-head table-red">total de saídas</td>
+    <td colspan=3 class="table-red">${sumExit.toFixed(2).replace('.', ',')}</td>
+  </tr>
+  <tr class="table-rend">
+    <td class="table-head">rendimento mensal</td>
+    <td colspan=3>${(values.sum - sumExit).toFixed(2).replace('.', ',')}</td>
+  </tr>
+  `
+  // definição visual de rendimentos, vermelho para negativo e verde para positivo
+  const rend = document.querySelector(".table-rend")
+
+  if (values.sum - sumExit >= 0 ) {
+    rend.children[0].classList.remove('table-head')
+    rend.classList.add('table-green')
+  } else {
+    rend.children[0].classList.remove('table-head')
+    rend.classList.add('table-red')
+  }
+  
+
+  document.querySelector('.restart').style.display = 'inline'
+  document.querySelector('.save').style.display = 'inline'
+
+
+}
+
+function save(event) {
+  event.preventDefault()
+  window.print()
+}
+    </script>
+  </body>
+</html>
