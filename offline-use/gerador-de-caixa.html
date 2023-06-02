@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-  <!-- versao compacta para uso offline. 
-  versao online disponivel em: https://welbio-dione.github.io/gerador-de-caixa/?-->
+<!-- versao para uso offline 
+versao oficial para uso online disponivel em: https://welbio-dione.github.io/gerador-de-caixa/?-->
+<html lang="pt-BR" manifest="manifest.appcache">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="este programa visa orientar e auxiliar pessoas leigas a lidarem com suas finanças">
     <meta name="author" content="welbio dione">
+    <!-- normalize css -->
     <style>
       /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
-html { line-height: 1.15;}
+html { line-height: 1.15; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body { margin: 0; }
 main { display: block; }
 h1 { font-size: 2em; margin: 0.67em 0; }
@@ -45,9 +46,31 @@ summary { display: list-item; }
 template { display: none; }
 [hidden] { display: none; }
     </style>
+    <!-- style.css -->
     <style>
-      body {
-  font-family: sans-serif;
+      :root {
+  --entry-bg : #8fffa7;
+  --entry-color: #0f2f16;
+  --exit-bg: #ff8f8f;
+  --exit-color: #2f1010;
+  --entry: #008000;
+  --exit: #ff0000;
+  --calculate-save: #0000ff;
+  --entry-disabled: #829782;
+  --exit-disabled: #e6b0b0;
+  --dark: #232323;
+  --card-bg: #fafafa;
+  --light-text: #ffffff;
+  --dark-text: #101010;
+  --modal-bg: #eaeaea;
+  --modal-shadow: #000000a3;
+  --modal-border: #686868;
+  --table-border: #C0C0C0;
+  --table-head: #F0F0F0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
   position: relative;
   font-size: 1.2rem;
 }
@@ -60,38 +83,41 @@ header {
 input {
   height: 40px;
   border-radius: 10px;
-  border: solid 1px black;
+  border: solid 1px var(--dark);
   outline: none;
 }
 .container {
   margin: 0 10vw;
 }
+fieldset {
+  background: var(--card-bg);
+}
 .entry {
   margin: 5px;
   padding: 10px 20px;
-  background: green;
+  background: var(--entry);
   border: none;
   border-radius: 10px;
-  color: white;
+  color: var(--light-text);
 }
 .entry:disabled {
-  background: #48955b;
+  background: var(--entry-disabled);
 }
 .back {
   padding: 10px 20px;
-  background: red;
+  background: var(--exit);
   border: none;
   border-radius: 10px;
-  color: white;
+  color: var(--light-text);
   margin: 5px
 }
 .back:disabled {
-  background: #954848;
+  background: var(--exit-disabled);
 }
 .card-entry {
-  background: #8fffa7;
-  border: solid 1px #54ae68;
-  color: #246131;
+  background: var(--entry-bg);
+  border: solid 1px var(--entry-color);
+  color: var(--entry-color);
   display: flex;
   justify-content: space-between;
   margin: 5px;
@@ -101,9 +127,9 @@ input {
   box-sizing: border-box;
 }
 .card-exit {
-  background: #ff8f8f;
-  border: solid 1px #b65d5d;
-  color: #622525;
+  background: var(--exit-bg);
+  border: solid 1px var(--exit-color);
+  color: var(--exit-color);
   display: flex;
   justify-content: space-between;
   margin: 5px;
@@ -111,15 +137,15 @@ input {
   border-radius: 10px;
 }
 #btn-calculate {
-  background: blue;
-  color: white;
+  background: var(--calculate-save);
+  color: var(--light-text);
   padding: 10px 20px;
   border: none;
   border-radius: 10px;
 }
 #btn-reset {
-  background: red;
-  color: white;
+  background: var(--exit);
+  color: var(--light-text);
   border: none;
   border-radius: 10px;
   padding: 10px;
@@ -127,17 +153,21 @@ input {
 #btn-calculate, #btn-reset {
   margin: 10px 0;
 }
-form {
+.form {
   text-align: center;
   margin: 15px;
 }
 .close {
   width: 40px;
+  transition: .4s ease;
+}
+.close:hover {
+  filter: invert(11%) sepia(72%) saturate(6689%) hue-rotate(358deg) brightness(111%) contrast(113%);
 }
 .modal {
-  background: #eaeaea;
+  background: var(--modal-bg);
   text-align: center;
-  border: solid 1px #686868;
+  border: solid 1px var(--modal-border);
   border-radius: 10px;
   position: fixed;
   padding: 20px;
@@ -145,6 +175,17 @@ form {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  display: none;
+  z-index: 100;
+}
+.modal-shadow {
+  width:100%;
+  height: 100%;
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  background: var(--modal-shadow);
   display: none;
 }
 .buttons-add {
@@ -157,7 +198,10 @@ form {
   margin: 10px 0;
 }
 .save {
-  background: blue;
+  background: var(--calculate-save);
+  display: none;
+}
+.remove {
   display: none;
 }
 .select {
@@ -166,33 +210,31 @@ form {
 .table-info {
   display: flex;
   justify-content: center;
-  margin: 30px;
 }
 table {
   border-collapse: collapse;
   display: none;
 }
 table th {
-  border:1px solid #C0C0C0;
+  border:1px solid var(--table-border);
   padding:10px;
-  background:#F0F0F0;
+  background: var(--table-head);
 }
 table td {
-  border:1px solid #C0C0C0;
+  border:1px solid var(--table-border);
   padding:10px;
 }
 .table-head {
-  background: #F0F0F0;
+  background: var(--table-head);
 }
 .table-red {
-  background: #ff8f8f;
-  color: #622525;
+  background: var(--exit-bg);
+  color: var(--exit-color);
 }
 .table-green {
-  background: #8fffa7;
-  color: #246131;
+  background: var(--entry-bg);
+  color: var(--entry-color);
 }
-
 .restart {
   display: none;
   text-align: center;
@@ -228,7 +270,7 @@ table td {
   </head>
   <body>
     <header>
-      <h1 class="page-title">Gerador de caixa</h1>
+      <h1>Gerador de caixa</h1>
     </header>
     <main class="container">
       <div class="movement">
@@ -250,19 +292,29 @@ table td {
           <input type="number" id="balance" placeholder="R$ 0,00" required/>
           </fieldSet>
         </div>
-        <form action="" method="get" id="informations">
-          <button id="btn-calculate" type="submit" onclick="calculate(event)">calcular</button>
-          <button id="btn-reset">limpar tudo</button>
-        </form>
+        <div class="form">
+          <button id="btn-calculate" type="submit" onclick="calculate()">gerar tabela</button>
+          <button id="btn-reset" type="submit" onclick="openReset()">limpar tudo</button>
+        </div>
       </div>
     </main>
-    <div class="modal">
-      <p>desculpe, mas essa funcionalidade ainda não está disponível</p>
-      <button onclick="closeElement()" class="back">sair</button>
+    <div class="modal-shadow">
+      <div class="modal">
+        <p>Tem certeza que quer <span style="color: red">excluir</span> esse item?</p>
+        <button onclick="deleteCard()" class="entry">confirmar</button>
+        <button onclick="closeModal()" class="back">cancelar</button>
+      </div>
+    </div>
+    <div class="modal-shadow m-reset">
+      <div class="modal modal-reset">
+        <p>Deseja <span style="color: red">excluir</span> todo o progresso?</p>
+        <button onclick="reset()" class="entry">confirmar</button>
+        <button onclick="closeReset()" class="back">cancelar</button>
+      </div>
     </div>
     <div class="table-info">
       <table>
-        <caption>resultados</caption>
+        <caption class="date-table"></caption>
         <thead>
           <tr>
             <th class="hidden"></th>
@@ -275,10 +327,10 @@ table td {
         </tbody>
       </table>
     </div>
-    <form action="">
-      <button class="entry restart">reiniciar</button>
-      <button class="entry save" onclick="save(event)">salvar</button>
-    </form>
+    <div class="form">
+      <button class="entry restart" onclick="restart()">reiniciar</button>
+      <button class="entry save" onclick="print()">salvar</button>
+    </div>
     <script>
       let values = {
   entry: [],
@@ -287,177 +339,298 @@ table td {
   desEntry: [],
   previous: 0,
   sum: 0,
-  total: 0
-}
+  total: 0,
+};
+
+let contEntry = 0,
+  contExit = 0;
 
 // entradas---------------------------------------------------------
-const createNewEntry = document.querySelector('.set-entry'),
-cardEntry = document.querySelector('.add-card'),
-disabledOrEnabledEntry = document.querySelector('#add-entry')
+const createNewEntry = document.querySelector(".set-entry"),
+  cardEntry = document.querySelector(".add-card"),
+  disabledOrEnabledEntry = document.querySelector("#add-entry");
+
 let descriptionEntry, valueEntry;
 
 function addNewEntry() {
-  createNewEntry.innerHTML = `<div class="_entry modal">
-  <p>adicionar entrada</p>
-  <input type="text" id="entry-description" placeholder="descrição" required autofocus/> <br>
-  <input type="number" id="entry-value" placeholder="R$ 0,00" required=""/> <br>
-  <div class="buttons-add">
-    <button onclick="removeEntry()" class="back">cancelar</button>
-    <button onclick="addEntry()" class="entry">adicionar</button>
-  </div>
-  </div>`
-  document.querySelector('._entry').classList.add('select')
-  disabledOrEnabledEntry.disabled = true
+  createNewEntry.innerHTML = `
+  <div class="modal-shadow">
+    <div class="_entry modal">
+      <h4>Adicionar <span style="color: green;">entrada</span></h4>
+      <input type="text" id="entry-description" placeholder="descrição"/> <br>
+      <input type="number" id="entry-value" placeholder="R$ 0,00"/> <br>
+      <div class="buttons-add">
+        <button onclick="addEntry()" class="entry">adicionar</button>
+        <button onclick="removeEntry()" class="back">cancelar</button>
+      </div>
+    </div>
+  </div>`;
+  document.querySelector("._entry").classList.add("select");
+  document.querySelector(".modal-shadow").classList.add("select");
+  disabledOrEnabledEntry.disabled = true;
+  const inputValue = document.querySelector('#entry-value')
+  const inputDes = document.querySelector('#entry-description')
+  inputDes.focus()
+
+  document.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+      if (inputValue !== document.activeElement) {
+        inputValue.focus() 
+      } else {
+        addEntry()
+      }
+    }
+  });
 }
 
 function addEntry() {
-  valueEntry = document.querySelector('#entry-value').value
-  values.entry.push(+valueEntry)
+  valueEntry = document.querySelector("#entry-value").value;
+  values.entry.push(+valueEntry);
 
-  descriptionEntry = document.querySelector('#entry-description').value
-  values.desEntry.push(descriptionEntry)
+  descriptionEntry = document.querySelector("#entry-description").value;
+  values.desEntry.push(descriptionEntry);
 
-  disabledOrEnabledEntry.disabled = false
-  createNewEntry.innerHTML = ''
-  cardEntry.innerHTML += `<div class="card-entry">
-  <p><b>${descriptionEntry}</b>${descriptionEntry === '' ? '' : ': R$ '}
-  ${values.entry[values.entry.length-1].toFixed(2).replace('.', ',')}</p>
-  </div>`
+  disabledOrEnabledEntry.disabled = false;
+  createNewEntry.innerHTML = "";
+  cardEntry.innerHTML += `<div class="card-entry entry${contEntry}">
+  <p><b>${descriptionEntry}</b>${descriptionEntry === "" ? "" : ": R$ "}
+  ${values.entry[values.entry.length - 1].toFixed(2).replace(".", ",")}</p>
+  <img src="./assets/x.svg" alt="excluir valor" class="close" onclick="openModal(this)">
+  </div>`;
+  contEntry++;
 }
 
 function removeEntry() {
-  createNewEntry.innerHTML = ''
-  disabledOrEnabledEntry.disabled = false
+  createNewEntry.innerHTML = "";
+  disabledOrEnabledEntry.disabled = false;
+}
+
+function openReset() {
+  document.querySelector(".m-reset").classList.add("select");
+  document.querySelector(".modal-reset").classList.add("select");
+}
+
+function closeReset() {
+  document.querySelector(".m-reset").classList.remove("select");
+  document.querySelector(".modal-reset").classList.remove("select");
+}
+
+function reset() {
+  window.location.replace(window.location.href)
 }
 
 // saidas--------------------------------------------------------------------
-const createNewExit = document.querySelector('.set-exit'),
-cardExit = document.querySelector('.add-card-exit'),
-disabledOrEnabledExit = document.querySelector('#add-exit')
+const createNewExit = document.querySelector(".set-exit"),
+  cardExit = document.querySelector(".add-card-exit"),
+  disabledOrEnabledExit = document.querySelector("#add-exit");
+
 let descriptionExit, valueExit;
 
 function addNewExit() {
-  createNewExit.innerHTML = `<div class="exit modal">
-  <p>adicionar saída</p>
-  <input type="text" id="exit-description" placeholder="descrição" required autofocus/> <br>
-  <input type="number" id="exit-value" placeholder="R$ 0,00" required=""/> <br>
-  <div class="buttons-add">
-    <button onclick="removeExit()" class="back">cancelar</button>
-    <button onclick="addExit()" class="entry">adicionar</button>
-  </div>
-  </div>`
+  createNewExit.innerHTML = `
+  <div class="modal-shadow">
+    <div class="exit modal">
+      <h4>Adicionar <span style="color: red;">saída</span></h4>
+      <input type="text" id="exit-description" placeholder="descrição"/> <br>
+      <input type="number" id="exit-value" placeholder="R$ 0,00"/> <br>
+      <div class="buttons-add">
+        <button onclick="addExit()" class="entry">adicionar</button>
+        <button onclick="removeExit()" class="back">cancelar</button>
+      </div>
+    </div>
+  </div>`;
+
+  document.querySelector(".exit").classList.add("select");
+  document.querySelector(".modal-shadow").classList.add("select");
+  const inputValue = document.querySelector('#exit-value')
+  const inputDes = document.querySelector('#exit-description')
+  inputDes.focus()
+  disabledOrEnabledExit.disabled = true;
   
-  document.querySelector('.exit').classList.add('select')
-  disabledOrEnabledExit.disabled = true
+
+  document.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+      if (inputValue !== document.activeElement) {
+        inputValue.focus() 
+      } else {
+        addExit()
+      }
+    }
+  });
 }
 
 function addExit() {
-  valueExit = document.querySelector('#exit-value').value
-  values.exit.push(+valueExit)
+  valueExit = document.querySelector("#exit-value").value;
+  values.exit.push(+valueExit);
 
-  descriptionExit = document.querySelector('#exit-description').value
-  values.desExit.push(descriptionExit)
+  descriptionExit = document.querySelector("#exit-description").value;
+  values.desExit.push(descriptionExit);
 
-  disabledOrEnabledExit.disabled = false
-  createNewExit.innerHTML = ''
-  cardExit.innerHTML += `<div class="card-exit">
-  <p><b>${descriptionExit}</b>${descriptionExit === '' ? '' : ': R$ '}
-  ${values.exit[values.exit.length-1].toFixed(2).replace('.', ',')}</p>
-  </div>`
+  disabledOrEnabledExit.disabled = false;
+
+  createNewExit.innerHTML = "";
+  cardExit.innerHTML += `<div class="card-exit exit${contExit}">
+  <p><b>${descriptionExit}</b>${descriptionExit === "" ? "" : ": R$ "}
+  ${values.exit[values.exit.length - 1].toFixed(2).replace(".", ",")}</p>
+  <img src="./assets/x.svg" alt="excluir valor" class="close" onclick="openModal(this)">
+  </div>`;
+  contExit++;
 }
 
 function removeExit() {
-  createNewExit.innerHTML = ''
-  disabledOrEnabledExit.disabled = false
+  createNewExit.innerHTML = "";
+  disabledOrEnabledExit.disabled = false;
 }
 
-function calculate(event) {
-  event.preventDefault();
-  values.previous = +document.querySelector('#balance').value
-  
-  let sumExit = 0
-  for (let i = 0; i < values.entry.length; i++) {
-    values.sum += values.entry[i]
-  }
-  
-  for (let j = 0; j < values.exit.length; j++){
-    sumExit += values.exit[j]
+function calculate() {
+  // removendo os itens de entrada que o usuário excluiu entradas--------------
+  const itensToRemoveEn = [];
+  for (let i = 0; i < values.desEntry.length; i++) {
+    let element = document.querySelector(`.entry${i}`);
+
+    if (element.classList.contains("remove")) {
+      itensToRemoveEn.push(i);
+    }
   }
 
-  values.total = (values.sum - sumExit) + values.previous
-  
-  const result = document.querySelector('.input-info')
-  const table = document.querySelector('table')
-  const main = document.querySelector('.container')
-  main.innerHTML = ''
-  table.classList.add('select')
+  for (let i = itensToRemoveEn.length - 1; i >= 0; i--) {
+    const index = itensToRemoveEn[i];
+
+    values.entry.splice(index, 1);
+    values.desEntry.splice(index, 1);
+  }
+
+  // para as saídas----------------
+  const itensToRemoveEx = [];
+  for (let i = 0; i < values.desExit.length; i++) {
+    let element = document.querySelector(`.exit${i}`);
+
+    if (element.classList.contains("remove")) {
+      itensToRemoveEx.push(i);
+    }
+  }
+
+  for (let i = itensToRemoveEx.length - 1; i >= 0; i--) {
+    const index = itensToRemoveEx[i];
+
+    values.exit.splice(index, 1);
+    values.desExit.splice(index, 1);
+  }
+  // --------------------------------------------------------------------------
+
+  values.previous = +document.querySelector("#balance").value;
+
+  let sumExit = 0;
+  for (let i = 0; i < values.entry.length; i++) {
+    values.sum += values.entry[i];
+  }
+
+  for (let j = 0; j < values.exit.length; j++) {
+    sumExit += values.exit[j];
+  }
+
+  values.total = values.sum - sumExit + values.previous;
+
+  const date = new Date(),
+  day = date.getDate(),
+  month = date.getMonth() + 1,
+  year = date.getFullYear(),
+  dateTable = document.querySelector('.date-table')
+
+  dateTable.innerHTML = `
+  ${day < 10 ? `0${day}` : day}/${month < 10 ? `0${month}` : month}/${year}
+  `
+
+  const result = document.querySelector(".input-info");
+  const table = document.querySelector("table");
+  const main = document.querySelector(".container");
+  main.innerHTML = "";
+  table.classList.add("select");
   for (let i = 0; i < values.desEntry.length; i++) {
     result.innerHTML += `
     <tr>
       <td></td>
       <td>${values.desEntry[i]}</td>
-      <td class="table-green">${values.entry[i].toFixed(2).replace('.', ',')}</td>
+      <td class="table-green">${values.entry[i]
+        .toFixed(2)
+        .replace(".", ",")}</td>
       <td></td>
     </tr>
-    `
+    `;
   }
-  for (let j = 0; j < values.desExit.length; j++){
+  for (let j = 0; j < values.desExit.length; j++) {
     result.innerHTML += `<tr>
       <td></td>
       <td>${values.desExit[j]}</td>
       <td></td>
-      <td class="table-red">${values.exit[j].toFixed(2).replace('.', ',')}</td>
+      <td class="table-red">${values.exit[j].toFixed(2).replace(".", ",")}</td>
     </tr>
-    `
+    `;
   }
 
   result.innerHTML += `
   <tr>
     <td class="table-head"><b>saldo anterior</b></td>
-    <td colspan=3>${values.previous.toFixed(2).replace('.', ',')}</td>
+    <td colspan=3>${values.previous.toFixed(2).replace(".", ",")}</td>
   </tr>
   <tr>
     <td class="table-head"><b>saldo atual</b></td>
-    <td colspan=3>${values.total.toFixed(2).replace('.', ',')}</td>
+    <td colspan=3>${values.total.toFixed(2).replace(".", ",")}</td>
   </tr>
   <tr>
     <td class="table-head"><b>para conferência</b></td>
-    <td colspan=3>${(values.sum + values.previous).toFixed(2).replace('.', ',')}</td>
+    <td colspan=3>${(values.sum + values.previous)
+      .toFixed(2)
+      .replace(".", ",")}</td>
   </tr>
   <tr>
     <td class="table-head table-green">total de entradas</td>
-    <td colspan=3 class="table-green">${values.sum.toFixed(2).replace('.', ',')}</td>
+    <td colspan=3 class="table-green">${values.sum
+      .toFixed(2)
+      .replace(".", ",")}</td>
   </tr>
   <tr>
     <td class="table-head table-red">total de saídas</td>
-    <td colspan=3 class="table-red">${sumExit.toFixed(2).replace('.', ',')}</td>
+    <td colspan=3 class="table-red">${sumExit.toFixed(2).replace(".", ",")}</td>
   </tr>
   <tr class="table-rend">
-    <td class="table-head">rendimento mensal</td>
-    <td colspan=3>${(values.sum - sumExit).toFixed(2).replace('.', ',')}</td>
+    <td class="table-head ${
+      values.sum - sumExit >= 0 ? "table-green" : "table-red"
+    }">rendimento mensal</td>
+    <td colspan=3 class="${
+      values.sum - sumExit >= 0 ? "table-green" : "table-red"
+    }">${(values.sum - sumExit).toFixed(2).replace(".", ",")}</td>
   </tr>
-  `
-  // definição visual de rendimentos, vermelho para negativo e verde para positivo
-  const rend = document.querySelector(".table-rend")
+  `;
 
-  if (values.sum - sumExit >= 0 ) {
-    rend.children[0].classList.remove('table-head')
-    rend.classList.add('table-green')
-  } else {
-    rend.children[0].classList.remove('table-head')
-    rend.classList.add('table-red')
-  }
-  
-
-  document.querySelector('.restart').style.display = 'inline'
-  document.querySelector('.save').style.display = 'inline'
-
-
+  document.querySelector(".restart").style.display = "inline";
+  document.querySelector(".save").style.display = "inline";
 }
 
-function save(event) {
-  event.preventDefault()
-  window.print()
+let elementCard;
+const modalShadow = document.querySelector(".modal-shadow"),
+  modal = document.querySelector(".modal");
+
+function openModal(e) {
+  elementCard = e;
+
+  modalShadow.style.display = "block";
+  modal.style.display = "block";
+}
+
+function closeModal() {
+  modalShadow.style.display = "none";
+  modal.style.display = "none";
+}
+
+function deleteCard() {
+  modalShadow.style.display = "none";
+  modal.style.display = "none";
+  elementCard.parentElement.classList.add("remove");
+}
+
+function restart() {
+  window.location.replace(window.location.href)
 }
     </script>
   </body>
