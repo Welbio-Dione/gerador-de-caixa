@@ -120,6 +120,7 @@ fieldset {
   color: var(--entry-color);
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin: 5px;
   padding: 5px;
   border-radius: 10px;
@@ -132,6 +133,7 @@ fieldset {
   color: var(--exit-color);
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin: 5px;
   padding: 5px;
   border-radius: 10px;
@@ -395,7 +397,7 @@ function addEntry() {
   cardEntry.innerHTML += `<div class="card-entry entry${contEntry}">
   <p><b>${descriptionEntry}</b>${descriptionEntry === "" ? "" : ": R$ "}
   ${values.entry[values.entry.length - 1].toFixed(2).replace(".", ",")}</p>
-  <p class='close'>❌</p>
+  <svg class="close" onclick="openModal(this)" height="48" viewBox="0 96 960 960" width="48"><path d="m249 849-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z"/></svg>
   </div>`;
   contEntry++;
 }
@@ -472,7 +474,7 @@ function addExit() {
   cardExit.innerHTML += `<div class="card-exit exit${contExit}">
   <p><b>${descriptionExit}</b>${descriptionExit === "" ? "" : ": R$ "}
   ${values.exit[values.exit.length - 1].toFixed(2).replace(".", ",")}</p>
-  <p class='close'>❌</p>
+  <svg class="close" onclick="openModal(this)" height="48" viewBox="0 96 960 960" width="48"><path d="m249 849-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z"/></svg>
   </div>`;
   contExit++;
 }
