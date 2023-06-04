@@ -24,26 +24,41 @@ function addNewEntry() {
     <div class="_entry modal">
       <h4>Adicionar <span style="color: green;">entrada</span></h4>
       <input type="text" id="entry-description" placeholder="descrição"/> <br>
-      <input type="number" id="entry-value" placeholder="R$ 0,00"/> <br>
+      <input type="text" id="entry-value" class="money" placeholder="R$ 0,00"/"> <br>
       <div class="buttons-add">
         <button onclick="addEntry()" class="entry">adicionar</button>
         <button onclick="removeEntry()" class="back">cancelar</button>
       </div>
     </div>
   </div>`;
+
   document.querySelector("._entry").classList.add("select");
   document.querySelector(".modal-shadow").classList.add("select");
   disabledOrEnabledEntry.disabled = true;
-  const inputValue = document.querySelector('#entry-value')
-  const inputDes = document.querySelector('#entry-description')
-  inputDes.focus()
+  const inputValue = document.querySelector("#entry-value");
+  const inputDes = document.querySelector("#entry-description");
+  inputDes.focus();
+
+  // validação do input R$ 0,00
+  const inputMoney = document.querySelector(".money");
+  inputMoney.addEventListener("input", () => {
+    let valor = inputMoney.value;
+    valor = valor.replace(/[^\d]/g, "");
+
+    let valorEmCentavos = Number(valor) / 100;
+    valor = valorEmCentavos.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+    inputMoney.value = valor;
+  });
 
   document.addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
       if (inputValue !== document.activeElement) {
-        inputValue.focus() 
+        inputValue.focus();
       } else {
-        addEntry()
+        addEntry();
       }
     }
   });
@@ -51,7 +66,7 @@ function addNewEntry() {
 
 function addEntry() {
   valueEntry = document.querySelector("#entry-value").value;
-  values.entry.push(+valueEntry);
+  values.entry.push(+valueEntry.replace(".", "").replace(",", "."));
 
   descriptionEntry = document.querySelector("#entry-description").value;
   values.desEntry.push(descriptionEntry);
@@ -82,7 +97,7 @@ function closeReset() {
 }
 
 function reset() {
-  window.location.replace(window.location.href)
+  window.location.replace(window.location.href);
 }
 
 // saidas--------------------------------------------------------------------
@@ -98,7 +113,7 @@ function addNewExit() {
     <div class="exit modal">
       <h4>Adicionar <span style="color: red;">saída</span></h4>
       <input type="text" id="exit-description" placeholder="descrição"/> <br>
-      <input type="number" id="exit-value" placeholder="R$ 0,00"/> <br>
+      <input type="text" id="exit-value" class="money" placeholder="R$ 0,00"/> <br>
       <div class="buttons-add">
         <button onclick="addExit()" class="entry">adicionar</button>
         <button onclick="removeExit()" class="back">cancelar</button>
@@ -108,18 +123,31 @@ function addNewExit() {
 
   document.querySelector(".exit").classList.add("select");
   document.querySelector(".modal-shadow").classList.add("select");
-  const inputValue = document.querySelector('#exit-value')
-  const inputDes = document.querySelector('#exit-description')
-  inputDes.focus()
+  const inputValue = document.querySelector("#exit-value");
+  const inputDes = document.querySelector("#exit-description");
+  inputDes.focus();
   disabledOrEnabledExit.disabled = true;
-  
+
+  // validação do input R$ 0,00
+  const inputMoney = document.querySelector(".money");
+  inputMoney.addEventListener("input", () => {
+    let valor = inputMoney.value;
+    valor = valor.replace(/[^\d]/g, "");
+
+    let valorEmCentavos = Number(valor) / 100;
+    valor = valorEmCentavos.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+    inputMoney.value = valor;
+  });
 
   document.addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
       if (inputValue !== document.activeElement) {
-        inputValue.focus() 
+        inputValue.focus();
       } else {
-        addExit()
+        addExit();
       }
     }
   });
@@ -127,7 +155,7 @@ function addNewExit() {
 
 function addExit() {
   valueExit = document.querySelector("#exit-value").value;
-  values.exit.push(+valueExit);
+  values.exit.push(+valueExit.replace(".", "").replace(",", "."));
 
   descriptionExit = document.querySelector("#exit-description").value;
   values.desExit.push(descriptionExit);
@@ -142,6 +170,20 @@ function addExit() {
   </div>`;
   contExit++;
 }
+
+// validação do input R$ 0,00
+const inputMoney = document.querySelector("#balance");
+inputMoney.addEventListener("input", () => {
+  let valor = inputMoney.value;
+  valor = valor.replace(/[^\d]/g, "");
+
+  let valorEmCentavos = Number(valor) / 100;
+  valor = valorEmCentavos.toLocaleString("pt-BR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+  inputMoney.value = valor;
+});
 
 function removeExit() {
   createNewExit.innerHTML = "";
@@ -184,7 +226,7 @@ function calculate() {
   }
   // --------------------------------------------------------------------------
 
-  values.previous = +document.querySelector("#balance").value;
+  values.previous = +document.querySelector("#balance").value.replace('.', '').replace(',', '.');
 
   let sumExit = 0;
   for (let i = 0; i < values.entry.length; i++) {
@@ -198,14 +240,14 @@ function calculate() {
   values.total = values.sum - sumExit + values.previous;
 
   const date = new Date(),
-  day = date.getDate(),
-  month = date.getMonth() + 1,
-  year = date.getFullYear(),
-  dateTable = document.querySelector('.date-table')
+    day = date.getDate(),
+    month = date.getMonth() + 1,
+    year = date.getFullYear(),
+    dateTable = document.querySelector(".date-table");
 
   dateTable.innerHTML = `
   ${day < 10 ? `0${day}` : day}/${month < 10 ? `0${month}` : month}/${year}
-  `
+  `;
 
   const result = document.querySelector(".input-info");
   const table = document.querySelector("table");
@@ -296,5 +338,5 @@ function deleteCard() {
 }
 
 function restart() {
-  window.location.replace(window.location.href)
+  window.location.replace(window.location.href);
 }

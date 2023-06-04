@@ -35,6 +35,7 @@ input {
   border-radius: 10px;
   border: solid 1px var(--dark);
   outline: none;
+  text-align: right;
 }
 .container {
   margin: 0 10vw;
@@ -148,6 +149,7 @@ fieldset {
 }
 ._entry input, .exit input {
   margin: 10px 0;
+  text-align: center;
 }
 .save {
   background: var(--calculate-save);
