@@ -53,13 +53,16 @@ function addNewEntry() {
     inputMoney.value = valor;
   });
 
-  document.addEventListener("keypress", (event) => {
+  document.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
       if (inputValue !== document.activeElement) {
         inputValue.focus();
       } else {
         addEntry();
       }
+    }
+    if (event.key === 'Escape') {
+      removeEntry()
     }
   });
 }
@@ -89,6 +92,15 @@ function removeEntry() {
 function openReset() {
   document.querySelector(".m-reset").classList.add("select");
   document.querySelector(".modal-reset").classList.add("select");
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+      reset()
+    } 
+    if (event.key === 'Escape') {
+      closeReset()
+    }
+  })
 }
 
 function closeReset() {
@@ -142,13 +154,16 @@ function addNewExit() {
     inputMoney.value = valor;
   });
 
-  document.addEventListener("keypress", (event) => {
+  document.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
       if (inputValue !== document.activeElement) {
         inputValue.focus();
       } else {
         addExit();
       }
+    }
+    if (event.key === 'Escape') {
+      removeExit()
     }
   });
 }
@@ -324,6 +339,15 @@ function openModal(e) {
 
   modalShadow.style.display = "block";
   modal.style.display = "block";
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+      deleteCard()
+    }
+    if (event.key === 'Escape') {
+      closeModal()
+    }
+  })
 }
 
 function closeModal() {
