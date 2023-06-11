@@ -89,23 +89,35 @@ function removeEntry() {
   disabledOrEnabledEntry.disabled = false;
 }
 
+const modalReset = document.querySelector(".modal-reset")
+const mReset = document.querySelector(".m-reset")
+const btnReset = document.querySelector('#btn-reset')
+let isModalOpen = false
+
 function openReset() {
-  document.querySelector(".m-reset").classList.add("select");
-  document.querySelector(".modal-reset").classList.add("select");
+  modalReset.classList.add('select');
+  mReset.classList.add('select')
+  isModalOpen = true
 
   document.addEventListener('keydown', event => {
-    if (event.key === 'Enter') {
-      reset()
-    } 
     if (event.key === 'Escape') {
-      closeReset()
+      if (isModalOpen) {
+        closeReset()
+      }
+    }
+    if (event.key === 'Enter') {
+      if (isModalOpen) {
+        reset()
+      }
     }
   })
 }
 
 function closeReset() {
-  document.querySelector(".m-reset").classList.remove("select");
-  document.querySelector(".modal-reset").classList.remove("select");
+  mReset.classList.remove("select");
+  modalReset.classList.remove("select");
+  isModalOpen = false
+  btnReset.blur()
 }
 
 function reset() {
@@ -330,6 +342,7 @@ function calculate() {
   document.querySelector(".save").style.display = "inline";
 }
 
+let modalOpen = false;
 let elementCard;
 const modalShadow = document.querySelector(".modal-shadow"),
   modal = document.querySelector(".modal");
@@ -339,13 +352,18 @@ function openModal(e) {
 
   modalShadow.style.display = "block";
   modal.style.display = "block";
+  modalOpen = true;
 
   document.addEventListener('keydown', event => {
     if (event.key === 'Enter') {
-      deleteCard()
+      if (modalOpen) {
+        deleteCard()
+      }
     }
     if (event.key === 'Escape') {
-      closeModal()
+      if (modalOpen) {
+        closeModal()
+      } 
     }
   })
 }
@@ -353,6 +371,7 @@ function openModal(e) {
 function closeModal() {
   modalShadow.style.display = "none";
   modal.style.display = "none";
+  modalOpen = false
 }
 
 function deleteCard() {
