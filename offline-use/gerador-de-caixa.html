@@ -415,7 +415,7 @@ function addEntry() {
   createNewEntry.innerHTML = "";
   cardEntry.innerHTML += `<div class="card-entry entry${contEntry}">
   <p><b>${descriptionEntry}</b>${descriptionEntry === "" ? "" : ": R$ "}
-  ${values.entry[values.entry.length - 1].toFixed(2).replace(".", ",")}</p>
+  ${valueEntry === '' ? '0,00': valueEntry}</p>
   <p onclick="openModal(this)">❌</p>
   </div>`;
   contEntry++;
@@ -517,7 +517,7 @@ function addExit() {
   createNewExit.innerHTML = "";
   cardExit.innerHTML += `<div class="card-exit exit${contExit}">
   <p><b>${descriptionExit}</b>${descriptionExit === "" ? "" : ": R$ "}
-  ${values.exit[values.exit.length - 1].toFixed(2).replace(".", ",")}</p>
+  ${valueExit === '' ? '0,00' : valueExit}</p>
   <p onclick="openModal(this)">❌</p>
   </div>`;
   contExit++;
