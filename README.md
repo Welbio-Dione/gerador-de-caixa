@@ -20,6 +20,7 @@ Pra lugar nenhum, o programa não salva os dados inseridos em nenhum banco de da
 - [x] ~~Melhorias na usabilidade.~~
 - [ ] Melhorias no layout;
 - [ ] Desenvolvimento de uma forma aprimorada para salvar as tabelas geradas em pdf;
+- [ ] Melhorias no código;
 
 ## Pontos em destaque
 - Manipulação do DOM.
