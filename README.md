@@ -12,7 +12,7 @@ com isso uma tabela com informações é gerada para que posa controlar suas fin
 
 ## E para onde vão os dados?
 
-Pra lugar nenhum, o software não salva os dados inseridos em nenhum banco de dados, e apenas você poderá ver as informações inseridas.
+Pra lugar nenhum, o programa não salva os dados inseridos em nenhum banco de dados, e apenas você poderá ver as informações inseridas.
 
 ## Melhorias
 - [x] ~~Adição de uma forma de excluir os ganhos e gastos sem apagar todo o progresso;~~
@@ -22,4 +22,5 @@ Pra lugar nenhum, o software não salva os dados inseridos em nenhum banco de da
 - [ ] Desenvolvimento de uma forma aprimorada para salvar as tabelas geradas em pdf;
 
 ## Pontos em destaque
-- Manipulação do DOM js
+- Manipulação do DOM.
+

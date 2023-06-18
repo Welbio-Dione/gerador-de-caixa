@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<!-- versao para uso offline 
-versao oficial para uso online disponivel em: https://welbio-dione.github.io/gerador-de-caixa/?-->
-<html lang="pt-BR">
+<html lang="pt-BR" manifest="manifest.appcache">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="este programa visa orientar e auxiliar pessoas leigas a lidarem com suas finanças">
     <meta name="author" content="welbio dione">
-    <!-- normalize css -->
+    <!-- normalize -->
     <style>
       /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 html { line-height: 1.15; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
@@ -85,6 +83,7 @@ input {
   border-radius: 10px;
   border: solid 1px var(--dark);
   outline: none;
+  text-align: right;
 }
 .container {
   margin: 0 10vw;
@@ -198,6 +197,7 @@ fieldset {
 }
 ._entry input, .exit input {
   margin: 10px 0;
+  text-align: center;
 }
 .save {
   background: var(--calculate-save);
@@ -268,6 +268,7 @@ table td {
   }
 }
     </style>
+    <link rel="shortcut icon" href="assets/logo.jpeg" type="image/x-icon">
     <title>Gerador de caixa</title>
   </head>
   <body>
@@ -291,7 +292,7 @@ table td {
         <div class="previous-balance">
           <fieldSet informations>
             <legend>saldo anterior</legend>
-          <input type="number" id="balance" placeholder="R$ 0,00" required/>
+          <input type="text" id="balance" placeholder="R$ 0,00"/>
           </fieldSet>
         </div>
         <div class="form">
@@ -360,34 +361,52 @@ function addNewEntry() {
     <div class="_entry modal">
       <h4>Adicionar <span style="color: green;">entrada</span></h4>
       <input type="text" id="entry-description" placeholder="descrição"/> <br>
-      <input type="number" id="entry-value" placeholder="R$ 0,00"/> <br>
+      <input type="text" id="entry-value" class="money" placeholder="R$ 0,00"/"> <br>
       <div class="buttons-add">
         <button onclick="addEntry()" class="entry">adicionar</button>
         <button onclick="removeEntry()" class="back">cancelar</button>
       </div>
     </div>
   </div>`;
+
   document.querySelector("._entry").classList.add("select");
   document.querySelector(".modal-shadow").classList.add("select");
   disabledOrEnabledEntry.disabled = true;
-  const inputValue = document.querySelector('#entry-value')
-  const inputDes = document.querySelector('#entry-description')
-  inputDes.focus()
+  const inputValue = document.querySelector("#entry-value");
+  const inputDes = document.querySelector("#entry-description");
+  inputDes.focus();
 
-  document.addEventListener("keypress", (event) => {
+  // validação do input R$ 0,00
+  const inputMoney = document.querySelector(".money");
+  inputMoney.addEventListener("input", () => {
+    let valor = inputMoney.value;
+    valor = valor.replace(/[^\d]/g, "");
+
+    let valorEmCentavos = Number(valor) / 100;
+    valor = valorEmCentavos.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+    inputMoney.value = valor;
+  });
+
+  document.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
       if (inputValue !== document.activeElement) {
-        inputValue.focus() 
+        inputValue.focus();
       } else {
-        addEntry()
+        addEntry();
       }
+    }
+    if (event.key === 'Escape') {
+      removeEntry()
     }
   });
 }
 
 function addEntry() {
   valueEntry = document.querySelector("#entry-value").value;
-  values.entry.push(+valueEntry);
+  values.entry.push(+valueEntry.replace(".", "").replace(",", "."));
 
   descriptionEntry = document.querySelector("#entry-description").value;
   values.desEntry.push(descriptionEntry);
@@ -396,8 +415,8 @@ function addEntry() {
   createNewEntry.innerHTML = "";
   cardEntry.innerHTML += `<div class="card-entry entry${contEntry}">
   <p><b>${descriptionEntry}</b>${descriptionEntry === "" ? "" : ": R$ "}
-  ${values.entry[values.entry.length - 1].toFixed(2).replace(".", ",")}</p>
-  <svg class="close" onclick="openModal(this)" height="48" viewBox="0 96 960 960" width="48"><path d="m249 849-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z"/></svg>
+  ${valueEntry === '' ? '0,00': valueEntry}</p>
+  <p onclick="openModal(this)">❌</p>
   </div>`;
   contEntry++;
 }
@@ -410,6 +429,15 @@ function removeEntry() {
 function openReset() {
   document.querySelector(".m-reset").classList.add("select");
   document.querySelector(".modal-reset").classList.add("select");
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+      reset()
+    } 
+    if (event.key === 'Escape') {
+      closeReset()
+    }
+  })
 }
 
 function closeReset() {
@@ -418,7 +446,7 @@ function closeReset() {
 }
 
 function reset() {
-  window.location.replace(window.location.href)
+  window.location.replace(window.location.href);
 }
 
 // saidas--------------------------------------------------------------------
@@ -434,7 +462,7 @@ function addNewExit() {
     <div class="exit modal">
       <h4>Adicionar <span style="color: red;">saída</span></h4>
       <input type="text" id="exit-description" placeholder="descrição"/> <br>
-      <input type="number" id="exit-value" placeholder="R$ 0,00"/> <br>
+      <input type="text" id="exit-value" class="money" placeholder="R$ 0,00"/> <br>
       <div class="buttons-add">
         <button onclick="addExit()" class="entry">adicionar</button>
         <button onclick="removeExit()" class="back">cancelar</button>
@@ -444,26 +472,42 @@ function addNewExit() {
 
   document.querySelector(".exit").classList.add("select");
   document.querySelector(".modal-shadow").classList.add("select");
-  const inputValue = document.querySelector('#exit-value')
-  const inputDes = document.querySelector('#exit-description')
-  inputDes.focus()
+  const inputValue = document.querySelector("#exit-value");
+  const inputDes = document.querySelector("#exit-description");
+  inputDes.focus();
   disabledOrEnabledExit.disabled = true;
-  
 
-  document.addEventListener("keypress", (event) => {
+  // validação do input R$ 0,00
+  const inputMoney = document.querySelector(".money");
+  inputMoney.addEventListener("input", () => {
+    let valor = inputMoney.value;
+    valor = valor.replace(/[^\d]/g, "");
+
+    let valorEmCentavos = Number(valor) / 100;
+    valor = valorEmCentavos.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+    inputMoney.value = valor;
+  });
+
+  document.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
       if (inputValue !== document.activeElement) {
-        inputValue.focus() 
+        inputValue.focus();
       } else {
-        addExit()
+        addExit();
       }
+    }
+    if (event.key === 'Escape') {
+      removeExit()
     }
   });
 }
 
 function addExit() {
   valueExit = document.querySelector("#exit-value").value;
-  values.exit.push(+valueExit);
+  values.exit.push(+valueExit.replace(".", "").replace(",", "."));
 
   descriptionExit = document.querySelector("#exit-description").value;
   values.desExit.push(descriptionExit);
@@ -473,11 +517,25 @@ function addExit() {
   createNewExit.innerHTML = "";
   cardExit.innerHTML += `<div class="card-exit exit${contExit}">
   <p><b>${descriptionExit}</b>${descriptionExit === "" ? "" : ": R$ "}
-  ${values.exit[values.exit.length - 1].toFixed(2).replace(".", ",")}</p>
-  <svg class="close" onclick="openModal(this)" height="48" viewBox="0 96 960 960" width="48"><path d="m249 849-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z"/></svg>
+  ${valueExit === '' ? '0,00' : valueExit}</p>
+  <p onclick="openModal(this)">❌</p>
   </div>`;
   contExit++;
 }
+
+// validação do input R$ 0,00
+const inputMoney = document.querySelector("#balance");
+inputMoney.addEventListener("input", () => {
+  let valor = inputMoney.value;
+  valor = valor.replace(/[^\d]/g, "");
+
+  let valorEmCentavos = Number(valor) / 100;
+  valor = valorEmCentavos.toLocaleString("pt-BR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+  inputMoney.value = valor;
+});
 
 function removeExit() {
   createNewExit.innerHTML = "";
@@ -520,7 +578,7 @@ function calculate() {
   }
   // --------------------------------------------------------------------------
 
-  values.previous = +document.querySelector("#balance").value;
+  values.previous = +document.querySelector("#balance").value.replace('.', '').replace(',', '.');
 
   let sumExit = 0;
   for (let i = 0; i < values.entry.length; i++) {
@@ -534,14 +592,14 @@ function calculate() {
   values.total = values.sum - sumExit + values.previous;
 
   const date = new Date(),
-  day = date.getDate(),
-  month = date.getMonth() + 1,
-  year = date.getFullYear(),
-  dateTable = document.querySelector('.date-table')
+    day = date.getDate(),
+    month = date.getMonth() + 1,
+    year = date.getFullYear(),
+    dateTable = document.querySelector(".date-table");
 
   dateTable.innerHTML = `
   ${day < 10 ? `0${day}` : day}/${month < 10 ? `0${month}` : month}/${year}
-  `
+  `;
 
   const result = document.querySelector(".input-info");
   const table = document.querySelector("table");
@@ -618,6 +676,15 @@ function openModal(e) {
 
   modalShadow.style.display = "block";
   modal.style.display = "block";
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+      deleteCard()
+    }
+    if (event.key === 'Escape') {
+      closeModal()
+    }
+  })
 }
 
 function closeModal() {
@@ -632,8 +699,9 @@ function deleteCard() {
 }
 
 function restart() {
-  window.location.replace(window.location.href)
+  window.location.replace(window.location.href);
 }
+
     </script>
   </body>
 </html>
